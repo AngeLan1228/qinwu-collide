@@ -1,0 +1,23 @@
+{
+  "name": "collide-vue",
+  "version": "1.0.0",
+  "private": true,
+  "description": "collide · 你和TA的小窝 —— Vue3 + Vite 独立版本（与 legacy 单文件版分开维护）",
+  "type": "module",
+  "scripts": {
+    "predev": "node legacy-bridge/ensure-assets.mjs",
+    "dev": "vite",
+    "prebuild": "node legacy-bridge/ensure-assets.mjs",
+    "build": "vite build",
+    "preview": "vite preview --host",
+    "assets": "node legacy-bridge/sync-assets.mjs",
+    "bridge": "node legacy-bridge/bootstrap-entry.mjs && node legacy-bridge/sync-assets.mjs"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.9",
+    "vite": "^8.3.0"
+  },
+  "dependencies": {
+    "vue": "^3.5.43"
+  }
+}

@@ -1,0 +1,35 @@
+# ===== 依赖 =====
+node_modules/
+
+# ===== 构建产物（Netlify 构建时重新生成，无需提交）=====
+dist/
+dist_test/
+dist-*/
+
+# ===== 临时 / 探针 / 备份文件 =====
+*.log
+*.tmp
+*.bak
+*.old
+*.orig
+*.__probe
+*.local
+
+# ===== 系统垃圾 =====
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===== 编辑器 / IDE =====
+.vscode/
+.idea/
+*.swp
+
+# ===== 本地环境变量（可能含密钥，禁止上传）=====
+.env
+.env.*
+!.env.example
+
+# 注意：public/ 下的静态资源（图片、music、ta-media、bigstore.js 等）
+# 必须提交 —— 这是独立仓库，Netlify 从 clone 构建时靠这些资源，
+# 旁边没有 collide-html 可以补齐，切勿忽略 public/。

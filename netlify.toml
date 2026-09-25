@@ -1,0 +1,8 @@
+# Netlify 部署配置（Vue3 + Vite 纯静态，无需后端/函数）
+[build]
+  command = "npm run build"   # 会先自动执行 prebuild 的资源自检
+  publish = "dist"
+
+# 单页/静态资源无需特殊重定向；/api/ 由浏览器内 local-server.js 拦截，不落 Netlify
+[build.environment]
+  NODE_VERSION = "22"
