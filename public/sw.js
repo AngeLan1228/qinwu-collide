@@ -2,7 +2,7 @@
    IMPORTANT: bump CACHE on every front-end change, or installed clients keep the
    old shell (the precached index.html won't refresh until the SW reinstalls). */
 const AI_NAME = "TA";              // push-title fallback; keep in sync with index.html CONFIG.AI_NAME
-const CACHE = "collide-tidal-v222";
+const CACHE = "collide-tidal-v224";
 const PRECACHE = [
 "./index.html",
 "./bigstore.js",

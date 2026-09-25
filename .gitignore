@@ -30,6 +30,14 @@ desktop.ini
 .env.*
 !.env.example
 
-# 注意：public/ 下的静态资源（图片、music、ta-media、bigstore.js 等）
+# 注意：public/ 下的静态资源（图片、ta-media、bigstore.js 等）
 # 必须提交 —— 这是独立仓库，Netlify 从 clone 构建时靠这些资源，
 # 旁边没有 collide-html 可以补齐，切勿忽略 public/。
+#
+# 下面这些是「已确认不再被任何代码引用」的遗留大文件（约 31MB）：
+# COMPANION_MUSIC 出厂歌单已清空（用户可自行上传），wall-ice 与两张海报也无引用。
+# 只做忽略、不做删除，本地文件都还在。
+public/music/
+public/wall-ice.jpg
+public/collide-poster.jpg
+public/collide-poster-real.jpg

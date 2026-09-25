@@ -1979,11 +1979,39 @@
       console.log("[local-server] 已修正历史消息顺序(" + fixed.length + " 条), 原数据备份在 collide_chat_backup_*");
     } catch (e) { /* 迁移失败也不能挡住正常使用 */ }
   }
+  /* 历史消息补心里话：气泡上那颗小圆点只在该条消息带 os 字段时才出现。
+     早年的消息（以及当年生成失败被静默吞掉的）一条 os 都没有，用户点开就是空的 ——
+     这里一次性用兜底句补齐，保证「每句话都有心里话」。
+     不调模型：启动时联网补几十条既慢又烧 token，兜底句完全够用。 */
+  function backfillInnerOs() {
+    try {
+      var list = getDB("chat", []);
+      if (!Array.isArray(list) || !list.length) return;
+      var pool = OS_FALLBACKS.slice();
+      var hit = 0;
+      for (var i = 0; i < list.length; i++) {
+        var r = list[i];
+        if (!r) continue;
+        var isTa = (r.role === "ta" || r.from === "ta");
+        if (!isTa) continue;
+        if (r.os && String(r.os).trim()) continue;
+        if (!String(r.content || r.text || "").trim()) continue;
+        if (!pool.length) pool = OS_FALLBACKS.slice();
+        r.os = pool.splice(Math.floor(Math.random() * pool.length), 1)[0];
+        hit++;
+      }
+      if (hit) {
+        setDB("chat", list);
+        console.log("[local-server] 已给 " + hit + " 条历史消息补上心里话");
+      }
+    } catch (e) { /* 补不上也不能影响聊天 */ }
+  }
   /* 这三件事都要读真数据：修聊天顺序、升级人设档案、判断要不要走首次引导。
      放在 LS.ready 之后跑 —— 在内存镜像灌好之前，getDB 拿到的会是一份"空"，
      而 llmCfg() 一见空就写默认值，用户的真人设档案会被开场这几毫秒洗掉。 */
   LS.ready.then(function () {
     repairChatOrder();
+    backfillInnerOs();              // 顺手把历史消息缺的心里话补上（小圆点才点得开）
     maybeUpgradePrompt(llmCfg());   // 页面加载就把旧版人设档案换掉，不用等发一句话
     maybeOnboard();
   });
